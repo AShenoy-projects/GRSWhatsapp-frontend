@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "grs-whatsapp"
+  },
+  "targets": {
+    "grs-whatsapp": {
+      "hosting": {
+        "GRSWhatsapp-Angular-FrontEnd": [
+          "grs-whatsapp"
+        ]
+      }
+    }
+  }
+}
