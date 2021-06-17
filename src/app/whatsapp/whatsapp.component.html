@@ -1,10 +1,11 @@
 <div class="container">
   <ng-template #tipContent>
-    Although the UI is active, Filter & Quick Filter features have been disabled
-    in the demo site, please use the populated data in the table below
+    Although the UI is active, Date Filter & Quick Filters features have been
+    disabled in the demo site, please use the pre-populated data in the table
+    below
   </ng-template>
   <div
-    class="row disabled"
+    class="row disabled mb-5"
     placement="bottom"
     [ngbTooltip]="tipContent"
     tooltipClass="toolTip"
@@ -89,6 +90,20 @@
       </div>
     </div>
   </div>
+  <div
+    class="selectHints alert alert-warning"
+    role="alert"
+    *ngIf="!selectedMedia.length"
+  >
+    <h4 class="alert-heading">
+      Start by selecting one or more files from the table below.
+    </h4>
+
+    <hr />
+    <span class="text-muted"
+      >You can also search by Phone No. or Sort the headers.</span
+    >
+  </div>
   <form>
     <div class="form-group form-inline">
       Phone Number Search:
@@ -111,6 +126,7 @@
     </thead>
     <tbody>
       <tr
+        class="tableRow"
         *ngFor="let file of displayList"
         (click)="onEdit(file)"
         [ngClass]="{
@@ -122,8 +138,156 @@
           {{ file.addedDate | date }}
         </td>
         <td>{{ file.status }}</td>
-        <td>{{ file.sentTo }}</td>
+        <td>{{ file.sentTo | hidePhoneNo }}</td>
       </tr>
     </tbody>
   </table>
+
+  <hr class="my-4" />
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" disbaled>
+    <div class="row">
+      <div class="col-10">
+        <div class="form-group">
+          <div
+            class="selectHints alert alert-warning"
+            role="alert"
+            *ngIf="
+              name.pristine &&
+              name.untouched &&
+              phone.pristine &&
+              phone.untouched &&
+              selectedMedia.length
+            "
+          >
+            <h4 class="alert-heading">
+              Next enter you full name and Phone number below.
+            </h4>
+          </div>
+          <label for="name-input">Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            id="name-input"
+          />
+          <label for="phone-input" class="pt-3"
+            >Mobile Number:
+            <small class="form-text text-muted"
+              >The Whatsapp number on which you want to receive your AR
+              videos</small
+            ></label
+          >
+          <div class="input-group mb-3">
+            <small
+              class="input-group-text text-muted"
+              placement="top"
+              ngbTooltip="Only Indian Numbers"
+              >+91</small
+            >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="phone"
+              id="phone-input"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <p class="text-muted mt-2">
+            Number of file selected: {{ selectedMedia.length }}
+          </p>
+        </div>
+      </div>
+      <div class="col-2">
+        <figure class="figure">
+          <a
+            href="https://signupforservices.com/whatsapp/optin/?bId=a15ca830-4d02-4ffb-974f-528b541209a2&bName=GRSAVS&s=URL&lang=en_US"
+            target="__blank"
+            ><img
+              src="assets/images/QR.png"
+              style="height: auto; width: 100%"
+              class="d-inline-block align-top"
+              alt="https://signupforservices.com/whatsapp/optin/?bId=a15ca830-4d02-4ffb-974f-528b541209a2&bName=GRSAVS&s=URL&lang=en_US"
+          /></a>
+
+          <figcaption class="figure-caption pl-4">Scan QR Code</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="row" id="DisplayErrors">
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="name.errors?.required && (name.dirty || name.touched)"
+      >
+        Name is required.
+      </div>
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="phone.errors?.required && (phone.dirty || phone.touched)"
+      >
+        Phone number is required.
+      </div>
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="
+          (phone.errors?.minlength || phone.errors?.maxlength) &&
+          (phone.dirty || phone.touched)
+        "
+      >
+        Phone number should be 10 digits.
+      </div>
+      <div
+        class="selectHints alert alert-danger"
+        role="alert"
+        *ngIf="
+          !selectedMedia.length &&
+          (phone.dirty || phone.touched) &&
+          (name.dirty || name.touched)
+        "
+      >
+        Please select atleast one file to process.
+      </div>
+      <div
+        class="selectHints alert alert-success"
+        role="alert"
+        *ngIf="successPrompt"
+      >
+        <h4 class="alert-heading">
+          Just one last step, scan the QR code and follow the link to receive
+          your videos.
+        </h4>
+        <hr />
+        Your request has been submitted and is getting processed asynchronously.
+        <button
+          type="button"
+          class="btn btn-link"
+          style="float: right"
+          (click)="successPrompt = false"
+        >
+          Close
+        </button>
+        <span></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col d-grid gap-2">
+        <button
+          type="submit"
+          class="btn btn-success btn-block"
+          [disabled]="form.invalid || !selectedMedia.length"
+        >
+          Process
+        </button>
+      </div>
+      <div class="col d-grid gap-2">
+        <button type="reset" class="btn btn-secondary btn-block">Reset</button>
+      </div>
+    </div>
+  </form>
+
+  <hr class="my-4" />
 </div>

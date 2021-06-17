@@ -12,6 +12,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WhatsappService } from './whatsapp.service';
 import { SortableDirective } from './sortable.directive';
+import { HidePhoneNoPipe } from './hide-phone-no.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { SortableDirective } from './sortable.directive';
     WhatsappComponent,
     NavbarComponent,
     SortableDirective,
+    HidePhoneNoPipe,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +29,7 @@ import { SortableDirective } from './sortable.directive';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot([
       {

@@ -5,7 +5,7 @@ import {
   ViewChildren,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { WhatsappService } from '../whatsapp.service';
 import { IgrsFile } from '../IModels/Igrsfile';
 import { SortableDirective } from '../sortable.directive';
@@ -26,8 +26,25 @@ export class WhatsappComponent implements OnDestroy {
   timeTo;
   subscription: Subscription;
   GrsFilesList: IgrsFile[];
-  displayList;
+  displayList: IgrsFile[];
   selectedMedia = [];
+  successPrompt = false;
+  form: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+    ]),
+  });
+
+  get name() {
+    return this.form.get('name');
+  }
+
+  get phone() {
+    return this.form.get('phone');
+  }
 
   filter = new FormControl('');
 
@@ -75,5 +92,10 @@ export class WhatsappComponent implements OnDestroy {
       ? this.selectedMedia.push(file)
       : this.selectedMedia.splice(index, 1);
     console.log('selectedmedia = > \n' + this.selectedMedia);
+  }
+
+  onSubmit() {
+    this.service.sendDataToProcess(this.displayList, this.phone.value);
+    this.successPrompt = true;
   }
 }
