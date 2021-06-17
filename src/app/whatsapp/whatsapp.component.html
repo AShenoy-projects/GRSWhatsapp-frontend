@@ -1,0 +1,129 @@
+<div class="container">
+  <ng-template #tipContent>
+    Although the UI is active, Filter & Quick Filter features have been disabled
+    in the demo site, please use the populated data in the table below
+  </ng-template>
+  <div
+    class="row disabled"
+    placement="bottom"
+    [ngbTooltip]="tipContent"
+    tooltipClass="toolTip"
+  >
+    <div class="row align-items-center">
+      <div class="col-md-auto">
+        <label style="font-weight: bolder">Filter by Show Time: </label>
+      </div>
+      <div class="col-md-auto">
+        <form class="form-inline">
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="dp"
+                ngbDatepicker
+                #d="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button
+                  class="
+                    btn btn-outline-secondary
+                    calendar
+                    fa fa-calendar fa-2x
+                  "
+                  (click)="d.toggle()"
+                  type="button"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-auto">
+        <label> From: </label>
+      </div>
+      <div class="col-md-auto">
+        <ngb-timepicker [(ngModel)]="timeFrom"></ngb-timepicker>
+      </div>
+      <div class="col-md-auto">
+        <label> To: </label>
+      </div>
+      <div class="col-md-auto">
+        <ngb-timepicker [(ngModel)]="timeTo"></ngb-timepicker>
+      </div>
+      <div class="col-md-auto">
+        <button type="button" class="btn btn-secondary btn-block" disabled>
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr />
+    <div class="row pb-4">
+      <div class="col-md-auto pt-2">
+        <label style="font-weight: bolder"> Quick Filters: </label>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-secondary btn-block" disabled>
+          Last 10 Minutes &raquo;
+        </button>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-secondary btn-block" disabled>
+          Last 30 Minutes &raquo;
+        </button>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-secondary btn-block" disabled>
+          Last 1 Hour &raquo;
+        </button>
+      </div>
+      <div class="col-md-2 pt-2">
+        <label>
+          <input
+            type="checkbox"
+            aria-label="Radio button for following text input"
+            disbaled
+          />
+          Hide Sent</label
+        >
+      </div>
+    </div>
+  </div>
+  <form>
+    <div class="form-group form-inline">
+      Phone Number Search:
+      <input class="form-control ml-2" type="text" [formControl]="filter" />
+    </div>
+  </form>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col" sortable="filename" (sort)="onSort($event)">
+          Filename
+        </th>
+        <th scope="col" sortable="addedDate" (sort)="onSort($event)">
+          Added Date
+        </th>
+        <th scope="col" sortable="status" (sort)="onSort($event)">Status</th>
+        <th scope="col" sortable="sentTo" (sort)="onSort($event)">Sent To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let file of displayList"
+        (click)="onEdit(file)"
+        [ngClass]="{
+          'alert alert-success rounded shadow': selectedMedia.includes(file)
+        }"
+      >
+        <th>{{ file.filename }}</th>
+        <td>
+          {{ file.addedDate | date }}
+        </td>
+        <td>{{ file.status }}</td>
+        <td>{{ file.sentTo }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
