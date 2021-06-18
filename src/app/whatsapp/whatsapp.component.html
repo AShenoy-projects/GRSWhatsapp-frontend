@@ -145,7 +145,16 @@
           'alert alert-success rounded shadow': selectedMedia.includes(file)
         }"
       >
-        <th>{{ file.filename }}</th>
+        <th>
+          <video
+            [src]="file.vidUrl | async"
+            width="175"
+            height="100"
+            autoplay
+            muted
+            controls
+          ></video>
+        </th>
         <td>
           {{ file.addedDate | date }}
         </td>

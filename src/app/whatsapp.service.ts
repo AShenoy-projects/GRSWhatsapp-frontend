@@ -2,14 +2,23 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { IgrsFile } from './IModels/Igrsfile';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WhatsappService {
-  constructor(private db: AngularFireDatabase, private http: HttpClient) {}
+  constructor(
+    private db: AngularFireDatabase,
+    private http: HttpClient,
+    private storage: AngularFireStorage
+  ) {}
+
+  getFileUrl(filename) {
+    return this.storage.ref(filename).getDownloadURL();
+  }
 
   getFilesData() {
     return this.db
@@ -39,6 +48,6 @@ export class WhatsappService {
 
     this.http
       .post(environment.backend.host + '/update', objToSend)
-      .subscribe((val) => console.log('response from server => ' + val));
+      .subscribe((val) => console.log('Response from the server => ' + val));
   }
 }

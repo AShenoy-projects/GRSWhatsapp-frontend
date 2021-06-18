@@ -14,6 +14,7 @@ import { WhatsappService } from './whatsapp.service';
 import { SortableDirective } from './sortable.directive';
 import { HidePhoneNoPipe } from './hide-phone-no.pipe';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     RouterModule.forRoot([
       {
         path: '**',
