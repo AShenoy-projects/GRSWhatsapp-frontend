@@ -125,9 +125,21 @@ export class WhatsappComponent implements OnDestroy, OnInit {
   }
 
   onSubmit() {
-    for (let file of this.selectedMedia) {
-      delete file.vidUrl;
-    }
+    // for (let file of this.selectedMedia) {
+    //   delete file.vidUrl;
+    // }
+    this.selectedMedia = this.selectedMedia.map((file) => {
+      // return {
+      //   id: file.id,
+      //   filename: file.filename,
+      //   addedDate: file.addedDate,
+      //   status: file.status,
+      //   sentTo: file.sentTo,
+      // };
+      const { vidUrl, ...rest } = file;
+      return rest;
+    });
+
     this.service.sendDataToProcess(
       this.selectedMedia,
       __COUNTRY_CODE + this.phone.value

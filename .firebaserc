@@ -7,6 +7,9 @@
       "hosting": {
         "GRSWhatsapp-Angular-FrontEnd": [
           "grs-whatsapp"
+        ],
+        "grs-whatsapp": [
+          "dist"
         ]
       }
     }

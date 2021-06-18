@@ -91,7 +91,11 @@
     </div>
   </div>
   <div
-    class="selectHints alert alert-warning"
+    class="
+      selectHints
+      alert alert-warning
+      animate__animated animate__pulse animate__repeat-3 animate__delay-3s
+    "
     role="alert"
     *ngIf="!selectedMedia.length && !isThereAFirebaseError"
   >
@@ -151,7 +155,6 @@
             [src]="file.vidUrl | async"
             width="175"
             height="100"
-            autoplay
             muted
             controls
           ></video>
@@ -180,7 +183,11 @@
       <div class="col-10">
         <div class="form-group">
           <div
-            class="selectHints alert alert-warning"
+            class="
+              selectHints
+              alert alert-warning
+              animate__animated animate__pulse animate__repeat-3
+            "
             role="alert"
             *ngIf="
               name.pristine &&
@@ -284,9 +291,20 @@
         Please select atleast one file to process.
       </div>
       <div
-        class="selectHints alert alert-success"
+        class="
+          selectHints
+          alert alert-success
+          animate__animated animate__pulse animate__repeat-3
+        "
         role="alert"
-        *ngIf="successPrompt"
+        *ngIf="
+          successPrompt &&
+          phone.pristine &&
+          phone.untouched &&
+          name.pristine &&
+          name.untouched &&
+          !selectedMedia.length
+        "
       >
         <h4 class="alert-heading">
           Just one last step, scan the QR code and follow the link to receive

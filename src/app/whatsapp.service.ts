@@ -46,8 +46,6 @@ export class WhatsappService {
       phone: phoneNumber,
     };
 
-    console.log('testingggggg' + objToSend);
-
     this.http
       .post(environment.backend.host + '/update', objToSend)
       .subscribe((val) => console.log('Response from the server => ' + val));
