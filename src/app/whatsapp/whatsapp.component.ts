@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 
 const compare = (v1: string | number, v2: string | number) =>
   v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+const __COUNTRY_CODE = '91';
 
 @Component({
   selector: 'appWhatsapp',
@@ -37,6 +38,8 @@ export class WhatsappComponent implements OnDestroy {
       Validators.maxLength(10),
     ]),
   });
+  isThereAFirebaseError = false;
+  isLoading = true;
 
   get name() {
     return this.form.get('name');
@@ -51,10 +54,17 @@ export class WhatsappComponent implements OnDestroy {
   @ViewChildren(SortableDirective) headers: QueryList<SortableDirective>;
 
   constructor(private service: WhatsappService) {
-    this.subscription = service.getFilesData().subscribe((list: IgrsFile[]) => {
-      this.GrsFilesList = list;
-      this.displayList = list;
-    });
+    this.subscription = service.getFilesData().subscribe(
+      (list: IgrsFile[]) => {
+        this.GrsFilesList = list;
+        this.displayList = list;
+        this.isLoading = false;
+      },
+      (err) => {
+        this.isThereAFirebaseError = true;
+        console.log('firebase error' + err);
+      }
+    );
 
     this.filter.valueChanges.subscribe((val) => {
       this.displayList = this.GrsFilesList.filter((file) =>
@@ -91,11 +101,15 @@ export class WhatsappComponent implements OnDestroy {
     index == -1
       ? this.selectedMedia.push(file)
       : this.selectedMedia.splice(index, 1);
-    console.log('selectedmedia = > \n' + this.selectedMedia);
   }
 
   onSubmit() {
-    this.service.sendDataToProcess(this.displayList, this.phone.value);
+    // this.service.sendDataToProcess(
+    //   this.selectedMedia,
+    //   __COUNTRY_CODE + this.phone.value
+    // );
     this.successPrompt = true;
+    this.form.reset();
+    this.selectedMedia.splice(0, this.selectedMedia.length);
   }
 }

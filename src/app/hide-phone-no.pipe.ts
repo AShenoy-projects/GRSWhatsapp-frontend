@@ -10,10 +10,12 @@ const __NO_OF_DIGITS_TO_HIDE = 4;
 export class HidePhoneNoPipe implements PipeTransform {
   transform(value: string): string {
     return value
-      ? value.replace(
-          value.substr(__HIDE_START_INDEX, __NO_OF_DIGITS_TO_HIDE),
-          '****'
-        )
+      ? value
+          .substr(2)
+          .replace(
+            value.substr(__HIDE_START_INDEX, __NO_OF_DIGITS_TO_HIDE),
+            '****'
+          )
       : null;
   }
 }

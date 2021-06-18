@@ -93,7 +93,7 @@
   <div
     class="selectHints alert alert-warning"
     role="alert"
-    *ngIf="!selectedMedia.length"
+    *ngIf="!selectedMedia.length && !isThereAFirebaseError"
   >
     <h4 class="alert-heading">
       Start by selecting one or more files from the table below.
@@ -103,6 +103,18 @@
     <span class="text-muted"
       >You can also search by Phone No. or Sort the headers.</span
     >
+  </div>
+  <div
+    class="selectHints alert alert-danger"
+    role="alert"
+    *ngIf="isThereAFirebaseError"
+  >
+    <h4 class="alert-heading">
+      Sorry, an unexpected error has occured trying to fetch data.
+    </h4>
+
+    <hr />
+    <span class="text-muted">We will be right back.</span>
   </div>
   <form>
     <div class="form-group form-inline">
@@ -124,7 +136,7 @@
         <th scope="col" sortable="sentTo" (sort)="onSort($event)">Sent To</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="!isLoading">
       <tr
         class="tableRow"
         *ngFor="let file of displayList"
@@ -142,6 +154,14 @@
       </tr>
     </tbody>
   </table>
+  <div
+    *ngIf="isLoading && !isThereAFirebaseError"
+    class="d-flex justify-content-center"
+  >
+    <div class="spinner-border text-success spinner-border-bg" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
 
   <hr class="my-4" />
 
