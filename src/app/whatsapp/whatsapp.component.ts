@@ -64,7 +64,6 @@ export class WhatsappComponent implements OnDestroy, OnInit {
     //Populate display lists
     this.subscription = service.getFilesData().subscribe(
       (list: IgrsFile[]) => {
-        this.GrsFilesList = list;
         this.isLoading = false;
 
         this.displayList.splice(0, this.displayList.length);
@@ -75,6 +74,7 @@ export class WhatsappComponent implements OnDestroy, OnInit {
           };
           this.displayList.push(obj);
         }
+        this.GrsFilesList = this.displayList;
       },
       (err) => {
         this.isThereAFirebaseError = true;
@@ -125,6 +125,9 @@ export class WhatsappComponent implements OnDestroy, OnInit {
   }
 
   onSubmit() {
+    for (let file of this.selectedMedia) {
+      delete file.vidUrl;
+    }
     this.service.sendDataToProcess(
       this.selectedMedia,
       __COUNTRY_CODE + this.phone.value
